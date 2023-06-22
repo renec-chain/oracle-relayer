@@ -17,6 +17,23 @@
     bn.js "^5.1.2"
     buffer-layout "^1.2.0"
 
+"@metaplex-foundation/mpl-core@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.npmjs.org/@metaplex-foundation/mpl-core/-/mpl-core-0.0.2.tgz"
+  integrity sha512-UUJ4BlYiWdDegAWmjsNQiNehwYU3QfSFWs3sv4VX0J6/ZrQ28zqosGhQ+I2ZCTEy216finJ82sZWNjuwSWCYyQ==
+  dependencies:
+    "@solana/web3.js" "^1.31.0"
+    bs58 "^4.0.1"
+
+"@metaplex-foundation/mpl-token-metadata@1.2.5":
+  version "1.2.5"
+  resolved "https://registry.npmjs.org/@metaplex-foundation/mpl-token-metadata/-/mpl-token-metadata-1.2.5.tgz"
+  integrity sha512-pxRG53JsTSwXpiJJMHNulJhH8kO3hHztQ3QxslUoKw2hBYKXsg9TGsiHgNIhN2MPZGBJ2pDeK6kNGv0sd54HhA==
+  dependencies:
+    "@metaplex-foundation/mpl-core" "^0.0.2"
+    "@solana/spl-token" "^0.1.8"
+    "@solana/web3.js" "^1.31.0"
+
 "@noble/curves@^1.0.0":
   version "1.1.0"
   resolved "https://registry.npmjs.org/@noble/curves/-/curves-1.1.0.tgz"
@@ -39,7 +56,7 @@
   resolved "https://registry.npmjs.org/@noble/secp256k1/-/secp256k1-1.7.1.tgz"
   integrity sha512-hOUk6AyBFmqVrv7k5WAw/LpszxVbj9gGN4JRkIX52fdFAj1UA61KXmZDvqVEm+pOyec3+fIeZB02LYa/pWOArw==
 
-"@orca-so/common-sdk@^0.1.9":
+"@orca-so/common-sdk@^0.1.4", "@orca-so/common-sdk@^0.1.9":
   version "0.1.12"
   resolved "https://registry.npmjs.org/@orca-so/common-sdk/-/common-sdk-0.1.12.tgz"
   integrity sha512-YtrwwnrkgnOLWPiXzKPdz+L6XRBfwXMd5zI0MZm2olCmyaM41RpKyHd+NW/adem+Eb2Ey0FVd+Bie6pRlY1Z0g==
@@ -121,7 +138,7 @@
 
 "@renec-foundation/oracle-sdk@https://github.com/tunghm01/oracle-sdk.git":
   version "0.1.0"
-  resolved "https://github.com/tunghm01/oracle-sdk.git#8c5bcda4708f2a8423cc97ebf54ee101779d04b0"
+  resolved "https://github.com/tunghm01/oracle-sdk.git#f9982ab566685923088b4b720a42961dd9c900ef"
   dependencies:
     "@orca-so/common-sdk" "^0.1.9"
     "@project-serum/anchor" "0.20.1"
@@ -130,6 +147,29 @@
     "@types/lodash" "^4.14.191"
     decimal.js "^10.3.1"
     tiny-invariant "^1.3.1"
+
+"@renec-foundation/redex-sdk@^0.7.22":
+  version "0.7.22"
+  resolved "https://registry.npmjs.org/@renec-foundation/redex-sdk/-/redex-sdk-0.7.22.tgz"
+  integrity sha512-m4pAemj0aGBQVnCjt4dOIlaHezkWcq3rXEHWxTuCAbQHzFjepGpsDPC8PWQfwAWcI0QAuOKTsYIDXviLuprPDg==
+  dependencies:
+    "@metaplex-foundation/mpl-token-metadata" "1.2.5"
+    "@orca-so/common-sdk" "^0.1.4"
+    "@project-serum/anchor" "~0.25.0"
+    "@solana/spl-token" "^0.1.8"
+    "@solana/web3.js" "1.66.0"
+    decimal.js "^10.3.1"
+    tiny-invariant "^1.2.0"
+
+"@solana/buffer-layout-utils@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.npmjs.org/@solana/buffer-layout-utils/-/buffer-layout-utils-0.2.0.tgz"
+  integrity sha512-szG4sxgJGktbuZYDg2FfNmkMi0DYQoVjN2h7ta1W1hPrwzarcFLBq9UpX1UjNXsNpT9dn+chgprtWGioUAr4/g==
+  dependencies:
+    "@solana/buffer-layout" "^4.0.0"
+    "@solana/web3.js" "^1.32.0"
+    bigint-buffer "^1.1.5"
+    bignumber.js "^9.0.1"
 
 "@solana/buffer-layout@^4.0.0":
   version "4.0.1"
@@ -149,6 +189,15 @@
     buffer "6.0.3"
     buffer-layout "^1.2.0"
     dotenv "10.0.0"
+
+"@solana/spl-token@^0.3.8":
+  version "0.3.8"
+  resolved "https://registry.npmjs.org/@solana/spl-token/-/spl-token-0.3.8.tgz"
+  integrity sha512-ogwGDcunP9Lkj+9CODOWMiVJEdRtqHAtX2rWF62KxnnSWtMZtV9rDhTrZFshiyJmxDnRL/1nKE1yJHg4jjs3gg==
+  dependencies:
+    "@solana/buffer-layout" "^4.0.0"
+    "@solana/buffer-layout-utils" "^0.2.0"
+    buffer "^6.0.3"
 
 "@solana/web3.js@1.66.0", "@solana/web3.js@^1.17.0":
   version "1.66.0"
@@ -171,7 +220,7 @@
     rpc-websockets "^7.5.0"
     superstruct "^0.14.2"
 
-"@solana/web3.js@^1.21.0", "@solana/web3.js@^1.36.0", "@solana/web3.js@^1.68.0", "@solana/web3.js@^1.77.3":
+"@solana/web3.js@^1.21.0", "@solana/web3.js@^1.31.0", "@solana/web3.js@^1.32.0", "@solana/web3.js@^1.36.0", "@solana/web3.js@^1.68.0", "@solana/web3.js@^1.77.3":
   version "1.77.3"
   resolved "https://registry.npmjs.org/@solana/web3.js/-/web3.js-1.77.3.tgz"
   integrity sha512-PHaO0BdoiQRPpieC1p31wJsBaxwIOWLh8j2ocXNKX8boCQVldt26Jqm2tZE4KlrvnCIV78owPLv1pEUgqhxZ3w==
@@ -266,6 +315,11 @@ bigint-buffer@^1.1.5:
   dependencies:
     bindings "^1.3.0"
 
+bignumber.js@^9.0.1:
+  version "9.1.1"
+  resolved "https://registry.npmjs.org/bignumber.js/-/bignumber.js-9.1.1.tgz"
+  integrity sha512-pHm4LsMJ6lzgNGVfZHjMoO8sdoRhOzOH4MLmY65Jg70bpxCKu5iOHNJyfF6OyvYw7t8Fpf35RuzUyqnQsj8Vig==
+
 bindings@^1.3.0:
   version "1.5.0"
   resolved "https://registry.npmjs.org/bindings/-/bindings-1.5.0.tgz"
@@ -307,7 +361,7 @@ buffer@6.0.1:
     base64-js "^1.3.1"
     ieee754 "^1.2.1"
 
-buffer@6.0.3, buffer@~6.0.3:
+buffer@6.0.3, buffer@^6.0.3, buffer@~6.0.3:
   version "6.0.3"
   resolved "https://registry.npmjs.org/buffer/-/buffer-6.0.3.tgz"
   integrity sha512-FTiCpNxtwiZZHEZbcbTIcZjERVICn9yq/pDFkTl95/AxzD1naBctN7YO68riM/gLSDY7sdrMby8hofADYuuqOA==
@@ -363,7 +417,7 @@ debug@^4.1.0:
   dependencies:
     ms "2.1.2"
 
-decimal.js@^10.3.1:
+decimal.js@^10.3.1, decimal.js@^10.4.3:
   version "10.4.3"
   resolved "https://registry.npmjs.org/decimal.js/-/decimal.js-10.4.3.tgz"
   integrity sha512-VBBaLc1MgL5XpzgIP7ny5Z6Nx3UrRkIViUkPUdtl9aya5amy3De1gsUUSB1g3+3sExYNjCAsAznmukyxCb1GRA==
