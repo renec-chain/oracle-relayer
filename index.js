@@ -15,7 +15,7 @@ import {
 import fs from 'fs';
 import relayerJson from "./relayer.json" assert { type: "json" };
 import { RPC_ENDPOINT_URL } from "./constants.js"
-import { calculateUSDPrice } from "./pricing.js";
+import { calculateUSDPrice } from "./price-fetching/index.js";
 
 const relayerKeypair = Keypair.fromSecretKey(Uint8Array.from(relayerJson))
 
@@ -25,7 +25,6 @@ const wallet = new Wallet(relayerKeypair);
 const provider = new AnchorProvider(connection, wallet, { commitment });
 
 const ctx = Context.withProvider(provider, ORACLE_PROGRAM_ID_TESTNET);
-
 
 const quote = REUSD_TESTNET;
 const base = REVND_TESTNET;

@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-export const fetchUSDPriceFromBinance = async () => {
+const CONVERT_FEE = 0.001;
+
+export const fetchUSDPriceFromBinanceP2p = async () => {
     try {
         const response = await axios.post('https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search', {
             fiat: "VND",
@@ -24,7 +26,7 @@ export const fetchUSDPriceFromBinance = async () => {
             });
 
             console.log({totalQuantity, totalValuation});
-            const usdtVNDPrice = totalValuation / totalQuantity * 0.999;
+            const usdtVNDPrice = totalValuation / totalQuantity * (1 - CONVERT_FEE);
             console.log('Binance: USDT/VND Price:', usdtVNDPrice);
             return usdtVNDPrice;
         } else {
