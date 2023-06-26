@@ -19,7 +19,7 @@ import {
   PublicKey,
 } from '@solana/web3.js';
 
-import myWallet from "./relayer.json" assert { type: "json" };
+import myWallet from "../relayer.json" assert { type: "json" };
 
 export const PROGRAM_ID = '7rh7ZtPzHqdY82RWjHf1Q8NaQiWnyNqkC48vSixcBvad'
 export const RPC_ENDPOINT_URL = 'https://api-mainnet-beta.renec.foundation:8899'
