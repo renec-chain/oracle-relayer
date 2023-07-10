@@ -1,4 +1,5 @@
-export const RPC_ENDPOINT_URL = "https://api-testnet.renec.foundation:8899";
+export const TESTNET_RPC_ENDPOINT_URL = "https://api-testnet.renec.foundation:8899";
+export const MAINNET_RPC_ENDPOINT_URL = "https://api-mainnet-beta.renec.foundation:8899";
 
 export const PRICE_WEIGHTS = {
     binance: 74,
