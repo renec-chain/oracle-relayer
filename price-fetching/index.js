@@ -3,6 +3,7 @@ import { fetchUSDPriceFromRemitano } from "./remitano.js";
 import { fetchUSDPriceFromCoinbase } from "./coinbase.js";
 import { fetchUSDPriceFromOkx } from "./okx.js";
 import { fetchUSDPriceFromBinance } from "./binance.js";
+import { fetchUSDPriceFromBinanceP2p } from "./binance-p2p.js";
 import { fetchUSDPriceFromKucoin } from "./kucoin.js";
 import { PRICE_WEIGHTS, VALID_PRICE_RANGE } from "../constants.js"
 
@@ -11,7 +12,7 @@ export const calculateUSDPrice = async () => {
     // const nemoPrice = await fetchUSDPriceFromNemo();
     const coinbasePrice = await fetchUSDPriceFromCoinbase();
     const okxPrice = await fetchUSDPriceFromOkx();
-    const binancePrice = await fetchUSDPriceFromBinance();
+    const binancePrice = await fetchUSDPriceFromBinanceP2p();
     const kucoinPrice = await fetchUSDPriceFromKucoin();
 
     const prices = {

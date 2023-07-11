@@ -26,8 +26,8 @@ const provider = new AnchorProvider(connection, wallet, { commitment });
 
 const ctx = Context.withProvider(provider, ORACLE_PROGRAM_ID_TESTNET);
 
-const quote = REUSD_TESTNET;
-const base = REVND_TESTNET;
+const base = REUSD_TESTNET;
+const quote = REVND_TESTNET;
 const newPrice = await calculateUSDPrice();
 console.log("Final reusd price: ", newPrice);
 
