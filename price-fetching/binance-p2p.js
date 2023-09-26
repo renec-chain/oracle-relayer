@@ -25,9 +25,7 @@ export const fetchUSDPriceFromBinanceP2p = async () => {
                 totalQuantity += parseFloat(adv.tradableQuantity);
             });
 
-            console.log({totalQuantity, totalValuation});
             const usdtVNDPrice = totalValuation / totalQuantity * (1 - CONVERT_FEE);
-            console.log('Binance: USDT/VND Price:', usdtVNDPrice);
             return usdtVNDPrice;
         } else {
             console.error('Binance: No data available for USDT/VND rate', response.data);

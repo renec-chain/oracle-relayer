@@ -24,13 +24,24 @@ import myWallet from "../relayer.json" assert { type: "json" };
 export const PROGRAM_ID = '7rh7ZtPzHqdY82RWjHf1Q8NaQiWnyNqkC48vSixcBvad'
 export const RPC_ENDPOINT_URL = 'https://api-mainnet-beta.renec.foundation:8899'
 
-const SLIPPAGE = 1
-const poolAddress = '7uBREo1HRKmqQvWHahmAU92E3eZNFQBSKffwLx5jGBV7' // reVND/reUSD
-const inputMintAddress = '4Q89182juiadeFgGw3fupnrwnnDmBhf7e7fHWxnUP3S3' // reUSD
-const inputAmount = '1'
-
 export const fetchUSDPriceFromNemo = async () => {
+  const poolAddress = '7uBREo1HRKmqQvWHahmAU92E3eZNFQBSKffwLx5jGBV7' // reVND/reUSD
+  const inputMintAddress = '4Q89182juiadeFgGw3fupnrwnnDmBhf7e7fHWxnUP3S3' // reUSD
+  
+  return await fetchPriceFromNemo(poolAddress, inputMintAddress)
+}
+
+export const fetchRENECPriceFromNemo = async () => {
+  const poolAddress = 'BQ2sH6LqkhnNZofKXtApHz12frTv1wfbihMg6osMnHx8' // RENEC/reUSD
+  const inputMintAddress = 'So11111111111111111111111111111111111111112' // reUSD
+  
+  return await fetchPriceFromNemo(poolAddress, inputMintAddress)
+}
+
+export const fetchPriceFromNemo = async (poolAddress, inputMintAddress) => {
   try {
+    const SLIPPAGE = 1
+    const inputAmount = '1'
     const connection = new Connection(RPC_ENDPOINT_URL)
     const wallet = new Wallet(Keypair.fromSecretKey(Uint8Array.from(myWallet)))
     const provider = new AnchorProvider(connection, wallet, {})
@@ -44,8 +55,6 @@ export const fetchUSDPriceFromNemo = async () => {
       const tokenInfoB = whirlpool.getTokenBInfo()
 
       const [tokenIn, tokenOut] = [tokenInfoA, tokenInfoB].sort((a, b) => a.mint.toBase58() === inputMintAddress ? -1 : 1)
-      const mintAddressIn = tokenIn.mint.toBase58()
-      const mintAddressOut = tokenOut.mint.toBase58()
 
       const tokenAmount = DecimalUtil.toU64(new Decimal(Number(inputAmount)), tokenIn.decimals)
       const slippageTolerance = Percentage.fromDecimal(new Decimal(SLIPPAGE))
@@ -61,7 +70,6 @@ export const fetchUSDPriceFromNemo = async () => {
       )
 
       const price = DecimalUtil.fromU64(quote.estimatedAmountOut, tokenOut.decimals);
-      console.log('Nemo: USDT/VND Price:', price);
       return price;
     }
   } catch (error) {
