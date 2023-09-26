@@ -4,7 +4,7 @@ const CONVERT_FEE = 0.001;
 
 export const fetchUSDPriceFromKucoin = async () => {
     try {
-        const response = await axios.get('https://kucoin.com/_api/currency/prices', {
+        const response = await axios.get('https://www.kucoin.com/_api/currency/prices', {
             params: {
                 base: 'VND',
             },
