@@ -25,10 +25,42 @@ export const fetchUSDPriceFromBinance = async () => {
         }
 
         const usdtVndPrice = usdtUsdPrice * usdVndPrice * (1 - CONVERT_FEE);
-        console.log('Binance: USDT/VND Price:', usdtVndPrice);
 
         return usdtVndPrice;
     } catch (error) {
         console.error('Binance: Error fetching USDT/VND rate:', error);
+    }
+}
+
+export const fetchBTCPriceFromBinance = async () => {
+    return await fetchPriceFromBinance('BTC');
+}
+
+export const fetchETHPriceFromBinance = async () => {
+    return await fetchPriceFromBinance('ETH');
+}
+
+const fetchPriceFromBinance = async (coin) => {
+    const endpoint = `https://api.binance.com/api/v3/ticker/price?symbol=${coin}USDT`;
+    try {
+        const response = await axios.get(endpoint);
+        const price = parseFloat(response.data.price);
+        return price;
+    } catch (error) {
+        console.error('Error fetching ${coin} price from Binance:', error);
+    }
+}
+
+export const fetchCoinsPriceFromBinance = async () => {
+    try {
+        const response = await axios.get('https://api.binance.com/api/v3/ticker/price?symbols=["BTCUSDT","ETHUSDT"]');
+        const data = response?.data;
+        let prices = {};
+        data.forEach(element => {
+            prices[element.symbol] = parseFloat(element.price);
+        });
+        return prices;
+    } catch (error) {
+        console.error('Error fetching ${coin} price from Binance:', error);
     }
 }
