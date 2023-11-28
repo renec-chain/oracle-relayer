@@ -64,7 +64,7 @@ const renecTx = await renecPriceClient.postPrice(
 );
 
 const rengnPriceClient = await ProductClient.getProduct(ctx, RENGN, REUSD);
-const rengnTx = await renecPriceClient.postPrice(
+const rengnTx = await rengnPriceClient.postPrice(
   rengnPrice,
   rengnPriceClient.ctx.wallet.publicKey
 );
