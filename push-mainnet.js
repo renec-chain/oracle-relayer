@@ -69,8 +69,12 @@ const rengnTx = await rengnPriceClient.postPrice(
   rengnPriceClient.ctx.wallet.publicKey
 );
 
-const finalTx = await appendTxs([reusdTx, btcTx, ethTx, renecTx, rengnTx]);
+// remove btcTx to another tx
+const finalTx = await appendTxs([reusdTx, ethTx, renecTx, rengnTx]);
 await finalTx.buildAndExecute();
+
+//
+await btcTx.buildAndExecute();
 
 await reusdPriceClient.refresh();
 await btcPriceClient.refresh();
