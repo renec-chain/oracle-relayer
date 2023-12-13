@@ -1,35 +1,36 @@
-import { 
+import {
     calculateUSDPrice,
     calculateBTCPrice,
     calculateETHPrice,
     calculateRENECPrice
 } from '../../price-fetching';
-import { 
+import {
     fetchUSDPriceFromRemitano,
     fetchBTCPriceFromRemitano,
     fetchETHPriceFromRemitano,
     fetchRENECPriceFromRemitano,
 } from "../../price-fetching/remitano";
-import { 
+import {
     fetchRENECPriceFromNemo,
 } from "../../price-fetching/nemo.js";
-import { 
-    fetchUSDPriceFromCoinbase,
+import {
     fetchBTCPriceFromCoinbase,
     fetchETHPriceFromCoinbase,
 } from "../../price-fetching/coinbase.js";
-import { 
+import {
     fetchUSDPriceFromOkx,
+    fetchUSDPriceFromOkxP2p,
     fetchBTCPriceFromOkx,
     fetchETHPriceFromOkx,
 } from "../../price-fetching/okx.js";
-import { 
+import {
     fetchBTCPriceFromBinance,
     fetchETHPriceFromBinance,
 } from "../../price-fetching/binance.js";
 import { fetchUSDPriceFromBinanceP2p } from "../../price-fetching/binance-p2p.js";
-import { 
+import {
     fetchUSDPriceFromKucoin,
+    fetchUSDPriceFromKucoinP2p,
     fetchBTCPriceFromKucoin,
     fetchETHPriceFromKucoin,
 } from "../../price-fetching/kucoin.js";
@@ -50,13 +51,12 @@ describe('Price calculations', () => {
 
     it('calculates average USD price from various exchanges', async () => {
         fetchUSDPriceFromRemitano.mockResolvedValue(21000);
-        fetchUSDPriceFromCoinbase.mockResolvedValue(20000);
-        fetchUSDPriceFromOkx.mockResolvedValue(25000);
+        fetchUSDPriceFromOkxP2p.mockResolvedValue(25000);
         fetchUSDPriceFromBinanceP2p.mockResolvedValue(21000);
-        fetchUSDPriceFromKucoin.mockResolvedValue(28000);
+        fetchUSDPriceFromKucoinP2p.mockResolvedValue(28000);
 
         const avgPrice = await calculateUSDPrice();
-        expect(avgPrice).toBeCloseTo(21680);
+        expect(avgPrice).toBeCloseTo(22700);
     });
 
     it('calculates average BTC price from various exchanges', async () => {
@@ -91,23 +91,21 @@ describe('Price calculations', () => {
 
     it('handles prices outside the VALID_PRICE_RANGES', async () => {
         fetchUSDPriceFromRemitano.mockResolvedValue(21000);
-        fetchUSDPriceFromCoinbase.mockResolvedValue(200000);
-        fetchUSDPriceFromOkx.mockResolvedValue(25000);
+        fetchUSDPriceFromOkxP2p.mockResolvedValue(25000);
         fetchUSDPriceFromBinanceP2p.mockResolvedValue(21000);
-        fetchUSDPriceFromKucoin.mockResolvedValue(28000);
+        fetchUSDPriceFromKucoinP2p.mockResolvedValue(28000);
 
         const avgPrice = await calculateUSDPrice();
-        expect(avgPrice).toBeCloseTo(21866.67);
+        expect(avgPrice).toBeCloseTo(22700);
     });
 
     it('handles undefined prices from some exchanges', async () => {
         fetchUSDPriceFromRemitano.mockResolvedValue(21000);
-        fetchUSDPriceFromCoinbase.mockResolvedValue(undefined);
-        fetchUSDPriceFromOkx.mockResolvedValue(25000);
+        fetchUSDPriceFromOkxP2p.mockResolvedValue(25000);
         fetchUSDPriceFromBinanceP2p.mockResolvedValue(21000);
-        fetchUSDPriceFromKucoin.mockResolvedValue(undefined);
+        fetchUSDPriceFromKucoinP2p.mockResolvedValue(undefined);
 
         const avgPrice = await calculateUSDPrice();
-        expect(avgPrice).toBeCloseTo(21428.57);
+        expect(avgPrice).toBeCloseTo(22111.11);
     });
 });

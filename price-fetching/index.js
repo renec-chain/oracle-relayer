@@ -13,6 +13,7 @@ import {
 } from "./coinbase.js";
 import {
   fetchUSDPriceFromOkx,
+  fetchUSDPriceFromOkxP2p,
   fetchBTCPriceFromOkx,
   fetchETHPriceFromOkx,
   fetchNGNPriceFromOkx,
@@ -27,6 +28,7 @@ import {
 } from "./binance-p2p.js";
 import {
   fetchUSDPriceFromKucoin,
+  fetchUSDPriceFromKucoinP2p,
   fetchBTCPriceFromKucoin,
   fetchETHPriceFromKucoin,
 } from "./kucoin.js";
@@ -34,13 +36,13 @@ import { PRICE_WEIGHTS, VALID_PRICE_RANGES } from "../constants.js";
 
 export const calculateUSDPrice = async () => {
   const remiPrice = await fetchUSDPriceFromRemitano();
-  const coinbasePrice = await fetchUSDPriceFromCoinbase();
-  const okxPrice = await fetchUSDPriceFromOkx();
+  // const coinbasePrice = await fetchUSDPriceFromCoinbase();
+  const okxPrice = await fetchUSDPriceFromOkxP2p("vnd");
   const binancePrice = await fetchUSDPriceFromBinanceP2p();
-  const kucoinPrice = await fetchUSDPriceFromKucoin();
+  const kucoinPrice = await fetchUSDPriceFromKucoinP2p("vnd");
 
   const prices = {
-    coinbase: coinbasePrice,
+    // coinbase: coinbasePrice,
     okx: okxPrice,
     binance: binancePrice,
     kucoin: kucoinPrice,
@@ -49,8 +51,8 @@ export const calculateUSDPrice = async () => {
   console.log("USD prices", prices);
   const avgPrice = calculateAveragePrice(
     prices,
-    PRICE_WEIGHTS.default,
-    VALID_PRICE_RANGES.reusd
+    PRICE_WEIGHTS.reusd,
+    VALID_PRICE_RANGES.reusd_vnd
   );
 
   return avgPrice;
@@ -124,8 +126,9 @@ export const calculateRENECPrice = async () => {
 
 export const calculateNGNPrice = async () => {
   const remiPrice = await fetchNGNPriceFromRemitano();
-  const okxPrice = await fetchNGNPriceFromOkx();
+  const okxPrice = await fetchUSDPriceFromOkxP2p("ngn");
   const binancePrice = await fetchNGNPriceFromBinanceP2p();
+  const kucoinPrice = await fetchUSDPriceFromKucoinP2p("ngn");
   // TODO: fetchRENECPriceFromNemo
   // const nemoPrice = await fetchRENECPriceFromNemo();
 
@@ -133,12 +136,13 @@ export const calculateNGNPrice = async () => {
     remitano: remiPrice,
     okx: okxPrice,
     binance: binancePrice,
+    kucoin: kucoinPrice,
   };
   console.log("reNGN prices", prices);
   const avgPrice = calculateAveragePrice(
     prices,
-    PRICE_WEIGHTS.ngn,
-    VALID_PRICE_RANGES.ngn
+    PRICE_WEIGHTS.reusd,
+    VALID_PRICE_RANGES.reusd_ngn
   );
   return avgPrice;
 };

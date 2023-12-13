@@ -19,7 +19,7 @@ import {
 import fs from 'fs';
 import relayerJson from "./relayer.json" assert { type: "json" };
 import { TESTNET_RPC_ENDPOINT_URL } from "./constants.js"
-import { 
+import {
     calculateUSDPrice,
     calculateBTCPrice,
     calculateETHPrice,

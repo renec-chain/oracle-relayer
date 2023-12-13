@@ -2,6 +2,7 @@ export const TESTNET_RPC_ENDPOINT_URL =
   "https://api-testnet.renec.foundation:8899";
 export const MAINNET_RPC_ENDPOINT_URL =
   "https://api-mainnet-beta.renec.foundation:8899";
+export const MAX_VOLUME_EACH_OFFER = 1000000;
 
 export const PRICE_WEIGHTS = {
   default: {
@@ -15,17 +16,22 @@ export const PRICE_WEIGHTS = {
     remitano: 92,
     nemo: 8,
   },
-  ngn: {
-    remitano: 20,
+  reusd: {
+    remitano: 15,
     binance: 50,
-    okx: 30,
+    okx: 25,
+    kucoin: 10,
   },
 };
 
 export const VALID_PRICE_RANGES = {
-  reusd: {
+  reusd_vnd: {
     low: 20000,
     high: 30000,
+  },
+  reusd_ngn: {
+    low: 800,
+    high: 1500,
   },
   rebtc: {
     low: 10000,
@@ -38,9 +44,5 @@ export const VALID_PRICE_RANGES = {
   renec: {
     low: 0.01,
     high: 3,
-  },
-  ngn: {
-    low: 800,
-    high: 1500,
   },
 };
