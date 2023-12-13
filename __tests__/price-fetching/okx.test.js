@@ -2,7 +2,8 @@ import axios from 'axios';
 import {
   fetchUSDPriceFromOkx,
   fetchBTCPriceFromOkx,
-  fetchETHPriceFromOkx
+  fetchETHPriceFromOkx,
+  fetchUSDPriceFromOkxP2p
 } from '../../price-fetching/okx';
 
 jest.mock('axios');
@@ -52,5 +53,54 @@ describe('Okx price fetching', () => {
 
     const price = await fetchETHPriceFromOkx();
     expect(price).toEqual(3500);
+  });
+});
+
+
+describe('OKX P2P price fetching', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('fetches USD price from OKX P2P', async () => {
+    const mockResponse = {
+      data: {
+        data: {
+          buy: [
+            { availableAmount: '10', price: '100' },
+            { availableAmount: '20', price: '150' },
+          ]
+        }
+      }
+    };
+    // Given that, totalValuation = (10*100) + (20*150) = 1000 + 3000 = 4000
+    // and totalQuantity = 10 + 20 = 30
+    // Then, usdtVNDPrice = 4000 / 30 = 133.33
+
+    axios.get.mockResolvedValue(mockResponse);
+
+    const price = await fetchUSDPriceFromOkxP2p();
+    expect(price).toBeCloseTo(133.33);
+  });
+
+  it('handles case with no data available', async () => {
+    const mockResponse = {
+      data: {
+        data: {
+          buy: []
+        }
+      }
+    };
+    axios.get.mockResolvedValue(mockResponse);
+
+    const price = await fetchUSDPriceFromOkxP2p();
+    expect(price).toBeUndefined();
+  });
+
+  it('handles request error', async () => {
+    axios.get.mockRejectedValue(new Error('Request error'));
+
+    const price = await fetchUSDPriceFromOkxP2p();
+    expect(price).toBeUndefined();
   });
 });
