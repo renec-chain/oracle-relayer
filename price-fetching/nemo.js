@@ -19,7 +19,7 @@ import {
   PublicKey,
 } from '@solana/web3.js';
 
-import myWallet from "../relayer.json" assert { type: "json" };
+import myWallet from "../wallet-for-reading.json" assert { type: "json" };
 
 export const PROGRAM_ID = '7rh7ZtPzHqdY82RWjHf1Q8NaQiWnyNqkC48vSixcBvad'
 export const RPC_ENDPOINT_URL = 'https://api-mainnet-beta.renec.foundation:8899'
@@ -27,14 +27,14 @@ export const RPC_ENDPOINT_URL = 'https://api-mainnet-beta.renec.foundation:8899'
 export const fetchUSDPriceFromNemo = async () => {
   const poolAddress = '7uBREo1HRKmqQvWHahmAU92E3eZNFQBSKffwLx5jGBV7' // reVND/reUSD
   const inputMintAddress = '4Q89182juiadeFgGw3fupnrwnnDmBhf7e7fHWxnUP3S3' // reUSD
-  
+
   return await fetchPriceFromNemo(poolAddress, inputMintAddress)
 }
 
 export const fetchRENECPriceFromNemo = async () => {
   const poolAddress = 'BQ2sH6LqkhnNZofKXtApHz12frTv1wfbihMg6osMnHx8' // RENEC/reUSD
   const inputMintAddress = 'So11111111111111111111111111111111111111112' // reUSD
-  
+
   return await fetchPriceFromNemo(poolAddress, inputMintAddress)
 }
 
