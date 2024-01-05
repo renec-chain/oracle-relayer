@@ -15,7 +15,7 @@
     "@renec-foundation/redex-sdk": "^0.7.22",
     "@solana/spl-token": "^0.3.8",
     "@solana/web3.js": "^1.77.3",
-    "axios": "^1.4.0",
+    "axios": "^1.6.4",
     "decimal.js": "^10.4.3"
   },
   "devDependencies": {
