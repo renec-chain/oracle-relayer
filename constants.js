@@ -1,3 +1,5 @@
+import { PublicKey } from "@solana/web3.js";
+
 export const TESTNET_RPC_ENDPOINT_URL =
   "https://api-testnet.renec.foundation:8899";
 export const MAINNET_RPC_ENDPOINT_URL =
@@ -22,6 +24,9 @@ export const PRICE_WEIGHTS = {
     okx: 25,
     kucoin: 10,
   },
+  gast: {
+    nemo: 100,
+  },
 };
 
 export const VALID_PRICE_RANGES = {
@@ -45,4 +50,12 @@ export const VALID_PRICE_RANGES = {
     low: 0.01,
     high: 3,
   },
+  gast: {
+    low: 0.1,
+    high: 0.97,
+  },
 };
+
+export const GAST = new PublicKey(
+  "GvTwnAQLTdM6fMZbuGQoVj5odefCC2FsDvaMgxqZV1fi"
+);

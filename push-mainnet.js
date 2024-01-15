@@ -15,13 +15,14 @@ import {
 } from "@renec-foundation/oracle-sdk";
 import fs from "fs";
 import relayerJson from "./relayer.json" assert { type: "json" };
-import { MAINNET_RPC_ENDPOINT_URL } from "./constants.js";
+import { MAINNET_RPC_ENDPOINT_URL, GAST } from "./constants.js";
 import {
   calculateUSDPrice,
   calculateBTCPrice,
   calculateETHPrice,
   calculateRENECPrice,
   calculateNGNPrice,
+  calculateGASTPrice,
 } from "./price-fetching/index.js";
 
 const relayerKeypair = Keypair.fromSecretKey(Uint8Array.from(relayerJson));
@@ -33,11 +34,18 @@ const provider = new AnchorProvider(connection, wallet, { commitment });
 
 const ctx = Context.withProvider(provider, ORACLE_PROGRAM_ID);
 
+const gastPrice = await calculateGASTPrice();
 const reusdPrice = await calculateUSDPrice();
 const btcPrice = await calculateBTCPrice();
 const ethPrice = await calculateETHPrice();
 const renecPrice = await calculateRENECPrice();
 const rengnPrice = await calculateNGNPrice();
+
+const gastPriceClient = await ProductClient.getProduct(ctx, REUSD, GAST);
+const gastTx = await gastPriceClient.postPrice(
+  gastPrice,
+  gastPriceClient.ctx.wallet.publicKey
+);
 
 const reusdPriceClient = await ProductClient.getProduct(ctx, REVND, REUSD);
 const reusdTx = await reusdPriceClient.postPrice(
@@ -76,11 +84,15 @@ await finalTx.buildAndExecute();
 //
 await btcTx.buildAndExecute();
 
+// GAST
+await gastTx.buildAndExecute();
+
 await reusdPriceClient.refresh();
 await btcPriceClient.refresh();
 await ethPriceClient.refresh();
 await renecPriceClient.refresh();
 await rengnPriceClient.refresh();
+await gastPriceClient.refresh();
 
 console.log("=============RESULT=============");
 console.log("reusdPrice", await reusdPriceClient.getPrice());
@@ -88,3 +100,4 @@ console.log("btcPrice", await btcPriceClient.getPrice());
 console.log("ethPrice", await ethPriceClient.getPrice());
 console.log("renecPrice", await renecPriceClient.getPrice());
 console.log("rengnPrice", await rengnPriceClient.getPrice());
+console.log("gastPrice", await gastPriceClient.getPrice());
