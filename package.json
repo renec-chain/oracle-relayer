@@ -11,6 +11,7 @@
   "type": "module",
   "dependencies": {
     "@project-serum/anchor": "^0.26.0",
+    "@renec-foundation/nemoswap-sdk": "0.9.3-delta",
     "@renec-foundation/oracle-sdk": "0.1.4",
     "@renec-foundation/redex-sdk": "^0.7.22",
     "@solana/spl-token": "^0.3.8",
