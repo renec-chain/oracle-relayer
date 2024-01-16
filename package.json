@@ -15,7 +15,7 @@
     "@renec-foundation/oracle-sdk": "0.1.4",
     "@renec-foundation/redex-sdk": "^0.7.22",
     "@solana/spl-token": "^0.3.8",
-    "@solana/web3.js": "^1.77.3",
+    "@solana/web3.js": "^1.87.6",
     "axios": "^1.4.0",
     "decimal.js": "^10.4.3"
   },
