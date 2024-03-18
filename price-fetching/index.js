@@ -5,7 +5,11 @@ import {
   fetchRENECPriceFromRemitano,
   fetchNGNPriceFromRemitano,
 } from "./remitano.js";
-import { fetchRENECPriceFromNemo, fetchGASTPriceFromNemo } from "./nemo.js";
+import {
+  fetchRENECPriceFromNemo,
+  fetchGASTPriceFromNemo,
+  fetchPLUS1PriceFromNemo,
+} from "./nemo.js";
 import {
   fetchUSDPriceFromCoinbase,
   fetchBTCPriceFromCoinbase,
@@ -45,6 +49,22 @@ export const calculateGASTPrice = async () => {
     prices,
     PRICE_WEIGHTS.gast,
     VALID_PRICE_RANGES.gast
+  );
+
+  return avgPrice;
+};
+
+export const calculatePLUS1Price = async () => {
+  const nemoPrice = await fetchPLUS1PriceFromNemo();
+
+  const prices = {
+    nemo: nemoPrice,
+  };
+  console.log("PLUS1 prices", prices);
+  const avgPrice = calculateAveragePrice(
+    prices,
+    PRICE_WEIGHTS.plus1,
+    VALID_PRICE_RANGES.plus1
   );
 
   return avgPrice;

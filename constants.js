@@ -27,35 +27,46 @@ export const PRICE_WEIGHTS = {
   gast: {
     nemo: 100,
   },
+  plus1: {
+    nemo: 100,
+  },
 };
 
 export const VALID_PRICE_RANGES = {
   reusd_vnd: {
-    low: 20000,
-    high: 30000,
+    low: 10000,
+    high: 40000,
   },
   reusd_ngn: {
-    low: 800,
-    high: 1500,
+    low: 100,
+    high: 5500,
   },
   rebtc: {
-    low: 10000,
-    high: 100000,
+    low: 1000,
+    high: 200000,
   },
   reeth: {
-    low: 500,
-    high: 5000,
+    low: 100,
+    high: 50000,
   },
   renec: {
     low: 0.01,
-    high: 3,
+    high: 9,
   },
   gast: {
     low: 0.1,
-    high: 0.97,
+    high: 9.97,
+  },
+  plus1: {
+    low: 0.01,
+    high: 9.97,
   },
 };
 
 export const GAST = new PublicKey(
   "GvTwnAQLTdM6fMZbuGQoVj5odefCC2FsDvaMgxqZV1fi"
+);
+
+export const PLUS1 = new PublicKey(
+  "AhDXc3sRW1xKPXwDwAmGb4JonRTka5rdSjg43owF53gg"
 );
