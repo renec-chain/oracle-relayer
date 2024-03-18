@@ -29,12 +29,11 @@ import {
 
 const catchError = (error) => {
   console.log("Got error: ", error.message)
-  const SLACK_WEBHOOK_URL = "https://hooks.slack.com/services/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"
   const SLACK_CHANNEL = "#renec-relayers-noti"
   const message = `Hey <@ngocbv>, we got exception: ${error.message}`
   const payload = `payload={\"channel\": \"${SLACK_CHANNEL}\", \"text\": \"${message}\"}`
 
-  axios.post(SLACK_WEBHOOK_URL, payload);
+  axios.post(process.env.SLACK_WEBHOOK_URL, payload);
 }
 
 try {
