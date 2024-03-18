@@ -27,6 +27,9 @@ export const PRICE_WEIGHTS = {
   gast: {
     nemo: 100,
   },
+  plus1: {
+    nemo: 100,
+  },
 };
 
 export const VALID_PRICE_RANGES = {
@@ -54,8 +57,16 @@ export const VALID_PRICE_RANGES = {
     low: 0.1,
     high: 9.97,
   },
+  plus1: {
+    low: 0.01,
+    high: 9.97,
+  },
 };
 
 export const GAST = new PublicKey(
   "GvTwnAQLTdM6fMZbuGQoVj5odefCC2FsDvaMgxqZV1fi"
+);
+
+export const PLUS1 = new PublicKey(
+  "AhDXc3sRW1xKPXwDwAmGb4JonRTka5rdSjg43owF53gg"
 );

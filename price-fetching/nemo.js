@@ -10,7 +10,7 @@ import {
 } from "@renec-foundation/nemoswap-sdk";
 
 import { Connection, Keypair, PublicKey } from "@solana/web3.js";
-import { GAST } from "../constants.js";
+import { GAST, PLUS1 } from "../constants.js";
 
 import myWallet from "../wallet-for-reading.json" assert { type: "json" };
 
@@ -20,7 +20,14 @@ export const RPC_ENDPOINT_URL =
 
 export const fetchGASTPriceFromNemo = async () => {
   const poolAddress = "BG83LmjZ5o1GdsmuUM6EJKLFj9LZqtLz12Aud3XEe1cU"; // GAST/reUSD
-  const inputMintAddress = GAST.toBase58(); // GAST
+  const inputMintAddress = GAST.toBase58();
+
+  return await fetchPriceFromNemo(poolAddress, inputMintAddress);
+};
+
+export const fetchPLUS1PriceFromNemo = async () => {
+  const poolAddress = "Bb23Ye3amaNUrXkbK1NBLpVEpzeQrXStaHhjsy1Enb86"; // PLUS1/reUSD
+  const inputMintAddress = PLUS1.toBase58();
 
   return await fetchPriceFromNemo(poolAddress, inputMintAddress);
 };
