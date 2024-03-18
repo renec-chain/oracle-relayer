@@ -1,3 +1,4 @@
+import "dotenv/config"
 import axios from "axios";
 import { PublicKey, Connection, Keypair } from "@solana/web3.js";
 import anchor from "@project-serum/anchor";
@@ -27,10 +28,10 @@ import {
   calculatePLUS1Price,
 } from "./price-fetching/index.js";
 
-const catchError = (error) => {
+const catchError = (error, coin) => {
   console.log("Got error: ", error.message)
   const SLACK_CHANNEL = "#renec-relayers-noti"
-  const message = `Hey <@ngocbv>, we got exception: ${error.message}`
+  const message = `Hey <@ngocbv>, we got exception on ${coin}: ${error.message}`
   const payload = `payload={\"channel\": \"${SLACK_CHANNEL}\", \"text\": \"${message}\"}`
 
   axios.post(process.env.SLACK_WEBHOOK_URL, payload);
@@ -59,7 +60,7 @@ try {
     await gastPriceClient.refresh();
     console.log("gastPrice", await gastPriceClient.getPrice());
   } catch (error) {
-    catchError(error);
+    catchError(error, "GAST");
   }
 
   try {
@@ -75,7 +76,7 @@ try {
     await plus1PriceClient.refresh();
     console.log("plus1Price", await plus1PriceClient.getPrice());
   } catch (error) {
-    catchError(error);
+    catchError(error, "PLUS1");
   }
 
   try {
@@ -92,7 +93,7 @@ try {
     await reusdPriceClient.refresh();
     console.log("reusdPrice", await reusdPriceClient.getPrice());
   } catch (error) {
-    catchError(error);
+    catchError(error, "reUSD");
   }
 
   try {
@@ -109,7 +110,7 @@ try {
     await btcPriceClient.refresh();
     console.log("btcPrice", await btcPriceClient.getPrice());
   } catch (error) {
-    catchError(error);
+    catchError(error, "reBTC");
   }
 
   try {
@@ -125,7 +126,7 @@ try {
     await ethPriceClient.refresh();
     console.log("ethPrice", await ethPriceClient.getPrice());
   } catch (error) {
-    catchError(error);
+    catchError(error, "reETH");
   }
 
   try {
@@ -141,7 +142,7 @@ try {
     await rengnPriceClient.refresh();
     console.log("rengnPrice", await rengnPriceClient.getPrice());
   } catch (error) {
-    catchError(error);
+    catchError(error, "reNGN");
   }
 
   try {
@@ -157,9 +158,9 @@ try {
     await renecPriceClient.refresh();
     console.log("renecPrice", await renecPriceClient.getPrice());
   } catch (error) {
-    catchError(error);
+    catchError(error, "RENEC");
   }
 }
 catch(error) {
-  catchError(error);
+  catchError(error, "main");
 }
