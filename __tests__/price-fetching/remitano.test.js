@@ -1,9 +1,7 @@
 import axios from 'axios';
 import {
   fetchUSDPriceFromRemitano,
-  fetchBTCPriceFromRemitano,
-  fetchETHPriceFromRemitano,
-  fetchRENECPriceFromRemitano
+  fetchPriceFromRemitano,
 } from '../../price-fetching/remitano';
 
 jest.mock('axios');
@@ -43,7 +41,7 @@ describe('Remitano price fetching', () => {
       }
     });
 
-    const price = await fetchBTCPriceFromRemitano();
+    const price = await fetchPriceFromRemitano("BTC");
     expect(price).toEqual(50000);
   });
 });

@@ -65,7 +65,7 @@ export const fetchETHPriceFromKucoin = async () => {
   return await fetchPriceFromKucoin('ETH');
 }
 
-const fetchPriceFromKucoin = async (coin) => {
+export const fetchPriceFromKucoin = async (coin) => {
   const endpoint = `https://api.kucoin.com/api/v1/market/orderbook/level1?symbol=${coin}-USDT`;
   try {
     const response = await axios.get(endpoint);

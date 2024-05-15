@@ -1,9 +1,7 @@
 import {
   fetchUSDPriceFromRemitano,
-  fetchBTCPriceFromRemitano,
-  fetchETHPriceFromRemitano,
-  fetchRENECPriceFromRemitano,
   fetchNGNPriceFromRemitano,
+  fetchPriceFromRemitano,
 } from "./remitano.js";
 import {
   fetchRENECPriceFromNemo,
@@ -12,19 +10,16 @@ import {
 } from "./nemo.js";
 import {
   fetchUSDPriceFromCoinbase,
-  fetchBTCPriceFromCoinbase,
-  fetchETHPriceFromCoinbase,
+  fetchPriceFromCoinbase,
 } from "./coinbase.js";
 import {
   fetchUSDPriceFromOkx,
   fetchUSDPriceFromOkxP2p,
-  fetchBTCPriceFromOkx,
-  fetchETHPriceFromOkx,
   fetchNGNPriceFromOkx,
+  fetchPriceFromOkx,
 } from "./okx.js";
 import {
-  fetchBTCPriceFromBinance,
-  fetchETHPriceFromBinance,
+  fetchPriceFromBinance,
 } from "./binance.js";
 import {
   fetchUSDPriceFromBinanceP2p,
@@ -33,8 +28,7 @@ import {
 import {
   fetchUSDPriceFromKucoin,
   fetchUSDPriceFromKucoinP2p,
-  fetchBTCPriceFromKucoin,
-  fetchETHPriceFromKucoin,
+  fetchPriceFromKucoin,
 } from "./kucoin.js";
 import { PRICE_WEIGHTS, VALID_PRICE_RANGES } from "../constants.js";
 
@@ -48,7 +42,6 @@ export const calculateGASTPrice = async () => {
   const avgPrice = calculateAveragePrice(
     prices,
     PRICE_WEIGHTS.gast,
-    VALID_PRICE_RANGES.gast
   );
 
   return avgPrice;
@@ -64,7 +57,6 @@ export const calculatePLUS1Price = async () => {
   const avgPrice = calculateAveragePrice(
     prices,
     PRICE_WEIGHTS.plus1,
-    VALID_PRICE_RANGES.plus1
   );
 
   return avgPrice;
@@ -88,18 +80,17 @@ export const calculateUSDPrice = async () => {
   const avgPrice = calculateAveragePrice(
     prices,
     PRICE_WEIGHTS.reusd,
-    VALID_PRICE_RANGES.reusd_vnd
   );
 
   return avgPrice;
 };
 
 export const calculateBTCPrice = async () => {
-  const remiPrice = await fetchBTCPriceFromRemitano();
-  const coinbasePrice = await fetchBTCPriceFromCoinbase();
-  const okxPrice = await fetchBTCPriceFromOkx();
-  const binancePrice = await fetchBTCPriceFromBinance();
-  const kucoinPrice = await fetchBTCPriceFromKucoin();
+  const remiPrice = await fetchPriceFromRemitano("BTC");
+  const coinbasePrice = await fetchPriceFromCoinbase("BTC");
+  const okxPrice = await fetchPriceFromOkx("BTC");
+  const binancePrice = await fetchPriceFromBinance("BTC");
+  const kucoinPrice = await fetchPriceFromKucoin("BTC");
 
   const prices = {
     coinbase: coinbasePrice,
@@ -112,18 +103,17 @@ export const calculateBTCPrice = async () => {
   const avgPrice = calculateAveragePrice(
     prices,
     PRICE_WEIGHTS.default,
-    VALID_PRICE_RANGES.rebtc
   );
 
   return avgPrice;
 };
 
 export const calculateETHPrice = async () => {
-  const remiPrice = await fetchETHPriceFromRemitano();
-  const coinbasePrice = await fetchETHPriceFromCoinbase();
-  const okxPrice = await fetchETHPriceFromOkx();
-  const binancePrice = await fetchETHPriceFromBinance();
-  const kucoinPrice = await fetchETHPriceFromKucoin();
+  const remiPrice = await fetchPriceFromRemitano("ETH");
+  const coinbasePrice = await fetchPriceFromCoinbase("ETH");
+  const okxPrice = await fetchPriceFromOkx("ETH");
+  const binancePrice = await fetchPriceFromBinance("ETH");
+  const kucoinPrice = await fetchPriceFromKucoin("ETH");
 
   const prices = {
     coinbase: coinbasePrice,
@@ -136,14 +126,36 @@ export const calculateETHPrice = async () => {
   const avgPrice = calculateAveragePrice(
     prices,
     PRICE_WEIGHTS.default,
-    VALID_PRICE_RANGES.reeth
+  );
+
+  return avgPrice;
+};
+
+export const calculateCommonCoinPrice = async (coin) => {
+  const remiPrice = await fetchPriceFromRemitano(coin);
+  const coinbasePrice = await fetchPriceFromCoinbase(coin);
+  const okxPrice = await fetchPriceFromOkx(coin);
+  const binancePrice = await fetchPriceFromBinance(coin);
+  const kucoinPrice = await fetchPriceFromKucoin(coin);
+
+  const prices = {
+    coinbase: coinbasePrice,
+    okx: okxPrice,
+    binance: binancePrice,
+    kucoin: kucoinPrice,
+    remitano: remiPrice,
+  };
+  console.log(`${coin} prices`, prices);
+  const avgPrice = calculateAveragePrice(
+    prices,
+    PRICE_WEIGHTS.default,
   );
 
   return avgPrice;
 };
 
 export const calculateRENECPrice = async () => {
-  const remiPrice = await fetchRENECPriceFromRemitano();
+  const remiPrice = await fetchPriceFromRemitano("RENEC");
   const nemoPrice = await fetchRENECPriceFromNemo();
 
   const prices = {
@@ -183,15 +195,11 @@ export const calculateNGNPrice = async () => {
   return avgPrice;
 };
 
-const calculateAveragePrice = (prices, priceWeights, validPriceRange) => {
+const calculateAveragePrice = (prices, priceWeights) => {
   let totalPrice = 0;
   let totalWeight = 0;
   Object.keys(prices).forEach((exchange) => {
-    if (
-      prices[exchange] &&
-      prices[exchange] >= validPriceRange.low &&
-      prices[exchange] <= validPriceRange.high
-    ) {
+    if (prices[exchange]) {
       totalPrice += prices[exchange] * priceWeights[exchange];
       totalWeight += priceWeights[exchange];
     } else {

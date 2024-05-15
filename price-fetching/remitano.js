@@ -1,26 +1,20 @@
 import axios from "axios";
 
 export const fetchUSDPriceFromRemitano = async () => {
-  return await fetchPriceFromRemitano("usdt", "vnd");
+  return await fetchPrice("usdt", "vnd");
 };
 
 export const fetchNGNPriceFromRemitano = async () => {
-  return await fetchPriceFromRemitano("usdt", "ngn");
+  return await fetchPrice("usdt", "ngn");
 };
 
-export const fetchBTCPriceFromRemitano = async () => {
-  return await fetchPriceFromRemitano("btc", "usdt");
+export const fetchPriceFromRemitano = async (token) => {
+  return await fetchPrice(token, "usdt");
 };
 
-export const fetchETHPriceFromRemitano = async () => {
-  return await fetchPriceFromRemitano("eth", "usdt");
-};
-
-export const fetchRENECPriceFromRemitano = async () => {
-  return await fetchPriceFromRemitano("renec", "usdt");
-};
-
-export const fetchPriceFromRemitano = async (tokenA, tokenB) => {
+export const fetchPrice = async (tokenA, tokenB) => {
+  tokenA = tokenA.toLowerCase();
+  tokenB = tokenB.toLowerCase();
   try {
     const response = await axios.get(
       "https://remitano.com/api/v1/amm_pool_states"

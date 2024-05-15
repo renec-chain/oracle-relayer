@@ -40,7 +40,7 @@ export const fetchETHPriceFromBinance = async () => {
   return await fetchPriceFromBinance('ETH');
 }
 
-const fetchPriceFromBinance = async (coin) => {
+export const fetchPriceFromBinance = async (coin) => {
   const endpoint = `https://api.binance.com/api/v3/ticker/price?symbol=${coin}USDT`;
   try {
     const response = await axios.get(endpoint);

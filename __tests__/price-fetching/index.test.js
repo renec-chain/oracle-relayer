@@ -6,32 +6,27 @@ import {
 } from '../../price-fetching';
 import {
     fetchUSDPriceFromRemitano,
-    fetchBTCPriceFromRemitano,
-    fetchETHPriceFromRemitano,
-    fetchRENECPriceFromRemitano,
+    fetchPriceFromRemitano,
 } from "../../price-fetching/remitano";
 import {
     fetchRENECPriceFromNemo,
 } from "../../price-fetching/nemo.js";
 import {
-    fetchBTCPriceFromCoinbase,
-    fetchETHPriceFromCoinbase,
+    fetchPriceFromCoinbase,
 } from "../../price-fetching/coinbase.js";
 import {
     fetchUSDPriceFromOkx,
     fetchUSDPriceFromOkxP2p,
-    fetchBTCPriceFromOkx,
-    fetchETHPriceFromOkx,
+    fetchPriceFromOkx,
 } from "../../price-fetching/okx.js";
 import {
-    fetchBTCPriceFromBinance,
-    fetchETHPriceFromBinance,
+    fetchPriceFromBinance,
 } from "../../price-fetching/binance.js";
 import { fetchUSDPriceFromBinanceP2p } from "../../price-fetching/binance-p2p.js";
 import {
     fetchUSDPriceFromKucoin,
     fetchUSDPriceFromKucoinP2p,
-    fetchBTCPriceFromKucoin,
+    fetchPriceFromKucoin,
     fetchETHPriceFromKucoin,
 } from "../../price-fetching/kucoin.js";
 
@@ -60,29 +55,29 @@ describe('Price calculations', () => {
     });
 
     it('calculates average BTC price from various exchanges', async () => {
-        fetchBTCPriceFromRemitano.mockResolvedValue(21000);
-        fetchBTCPriceFromCoinbase.mockResolvedValue(20000);
-        fetchBTCPriceFromOkx.mockResolvedValue(25000);
-        fetchBTCPriceFromBinance.mockResolvedValue(21000);
-        fetchBTCPriceFromKucoin.mockResolvedValue(28000);
+        fetchPriceFromRemitano.mockResolvedValue(21000);
+        fetchPriceFromCoinbase.mockResolvedValue(20000);
+        fetchPriceFromOkx.mockResolvedValue(25000);
+        fetchPriceFromBinance.mockResolvedValue(21000);
+        fetchPriceFromKucoin.mockResolvedValue(28000);
 
         const avgPrice = await calculateBTCPrice();
         expect(avgPrice).toBeCloseTo(21680);
     });
 
     it('calculates average ETH price from various exchanges', async () => {
-        fetchETHPriceFromRemitano.mockResolvedValue(1500);
-        fetchETHPriceFromCoinbase.mockResolvedValue(1600);
-        fetchETHPriceFromOkx.mockResolvedValue(1400);
-        fetchETHPriceFromBinance.mockResolvedValue(1450);
-        fetchETHPriceFromKucoin.mockResolvedValue(1550);
+        fetchPriceFromRemitano.mockResolvedValue(1500);
+        fetchPriceFromCoinbase.mockResolvedValue(1600);
+        fetchPriceFromOkx.mockResolvedValue(1400);
+        fetchPriceFromBinance.mockResolvedValue(1450);
+        fetchPriceFromKucoin.mockResolvedValue(1550);
 
         const avgPrice = await calculateETHPrice();
         expect(avgPrice).toBeCloseTo(1467);
     });
 
     it('calculates average RENEC price from various exchanges', async () => {
-        fetchRENECPriceFromRemitano.mockResolvedValue(0.5);
+        fetchPriceFromRemitano.mockResolvedValue(0.5);
         fetchRENECPriceFromNemo.mockResolvedValue(0.55);
 
         const avgPrice = await calculateRENECPrice();

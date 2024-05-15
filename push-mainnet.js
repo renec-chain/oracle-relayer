@@ -1,4 +1,6 @@
-import "dotenv/config"
+import dotenv from 'dotenv'
+dotenv.config({ path: process.cwd() + '/oracle-relayer/.env' })
+
 import axios from "axios";
 import { PublicKey, Connection, Keypair } from "@solana/web3.js";
 import anchor from "@project-serum/anchor";
@@ -17,24 +19,33 @@ import {
 } from "@renec-foundation/oracle-sdk";
 import fs from "fs";
 import relayerJson from "./relayer.json" assert { type: "json" };
-import { MAINNET_RPC_ENDPOINT_URL, GAST, PLUS1 } from "./constants.js";
+import {
+  MAINNET_RPC_ENDPOINT_URL,
+  GAST,
+  PLUS1,
+  REBNB,
+  RESOL,
+} from "./constants.js";
 import {
   calculateUSDPrice,
-  calculateBTCPrice,
-  calculateETHPrice,
   calculateRENECPrice,
   calculateNGNPrice,
   calculateGASTPrice,
   calculatePLUS1Price,
+  calculateCommonCoinPrice,
 } from "./price-fetching/index.js";
 
-const catchError = (error, coin) => {
-  console.log("Got error: ", error.message)
+const postSlack = (message) => {
   const SLACK_CHANNEL = "#renec-relayers-noti"
-  const message = `Hey <@ngocbv>, we got exception on ${coin}: ${error.message}`
   const payload = `payload={\"channel\": \"${SLACK_CHANNEL}\", \"text\": \"${message}\"}`
 
   axios.post(process.env.SLACK_WEBHOOK_URL, payload);
+}
+
+const catchError = (error, coin) => {
+  console.log("Got error: ", error.message)
+  const message = `Hey <@ngocbv>, we got exception on ${coin}: ${error.message}`
+  postSlack(message);
 }
 
 try {
@@ -46,6 +57,38 @@ try {
   const provider = new AnchorProvider(connection, wallet, { commitment });
 
   const ctx = Context.withProvider(provider, ORACLE_PROGRAM_ID);
+
+  try {
+    const bnbPrice = await calculateCommonCoinPrice("BNB");
+
+    const bnbPriceClient = await ProductClient.getProduct(ctx, REUSD, REBNB);
+    const bnbTx = await bnbPriceClient.postPrice(
+      bnbPrice,
+      bnbPriceClient.ctx.wallet.publicKey
+    );
+    await bnbTx.buildAndExecute();
+    console.log("Post rebnb price done.")
+    await bnbPriceClient.refresh();
+    console.log("bnbPrice", await bnbPriceClient.getPrice());
+  } catch (error) {
+    catchError(error, "reBNB");
+  }
+
+  try {
+    const solPrice = await calculateCommonCoinPrice("SOL");
+
+    const solPriceClient = await ProductClient.getProduct(ctx, REUSD, RESOL);
+    const solTx = await solPriceClient.postPrice(
+      solPrice,
+      solPriceClient.ctx.wallet.publicKey
+    );
+    await solTx.buildAndExecute();
+    console.log("Post resol price done.")
+    await solPriceClient.refresh();
+    console.log("solPrice", await solPriceClient.getPrice());
+  } catch (error) {
+    catchError(error, "reSOL");
+  }
 
   try {
     const gastPrice = await calculateGASTPrice();
@@ -97,7 +140,7 @@ try {
   }
 
   try {
-    const btcPrice = await calculateBTCPrice();
+    const btcPrice = await calculateCommonCoinPrice("BTC");
 
     const btcPriceClient = await ProductClient.getProduct(ctx, REUSD, REBTC);
     const btcTx = await btcPriceClient.postPrice(
@@ -114,7 +157,7 @@ try {
   }
 
   try {
-    const ethPrice = await calculateETHPrice();
+    const ethPrice = await calculateCommonCoinPrice("ETH");
 
     const ethPriceClient = await ProductClient.getProduct(ctx, REUSD, REETH);
     const ethTx = await ethPriceClient.postPrice(

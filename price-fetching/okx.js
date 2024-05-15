@@ -108,13 +108,13 @@ export const fetchUSDPriceFromOkxP2p = async (fiatCurrency) => {
   }
 };
 
-const fetchPriceFromOkx = async (coin) => {
-  const endpoint = `https://www.okx.com/api/v5/market/ticker?instId=${coin}-USD-SWAP`;
+export const fetchPriceFromOkx = async (coin) => {
+  const endpoint = `https://www.okx.com/api/v5/market/ticker?instId=${coin}-USDT`;
   try {
     const response = await axios.get(endpoint);
     const price = parseFloat(response.data.data[0].last);
     return price;
   } catch (error) {
-    console.error("Error fetching ${coin} price from Okx:", error);
+    console.error(`Error fetching ${coin} price from Okx:`, error);
   }
 };

@@ -70,3 +70,11 @@ export const GAST = new PublicKey(
 export const PLUS1 = new PublicKey(
   "AhDXc3sRW1xKPXwDwAmGb4JonRTka5rdSjg43owF53gg"
 );
+
+export const REBNB = new PublicKey(
+  "7G8x2UZSgVDZzbPSUKGjg2e2YAkMV8zwiP1525yxEK47"
+);
+
+export const RESOL = new PublicKey(
+  "3r7AzTijvTDoLGgMqcNXTJimwg8XyxUG6EaVqHXF8EWC"
+);
