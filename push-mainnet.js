@@ -25,6 +25,7 @@ import {
   PLUS1,
   REBNB,
   RESOL,
+  APS,
 } from "./constants.js";
 import {
   calculateUSDPrice,
@@ -32,6 +33,7 @@ import {
   calculateNGNPrice,
   calculateGASTPrice,
   calculatePLUS1Price,
+  calculateAPSPrice,
   calculateCommonCoinPrice,
 } from "./price-fetching/index.js";
 
@@ -57,6 +59,22 @@ try {
   const provider = new AnchorProvider(connection, wallet, { commitment });
 
   const ctx = Context.withProvider(provider, ORACLE_PROGRAM_ID);
+
+  try {
+    const apsPrice = await calculateAPSPrice();
+
+    const apsPriceClient = await ProductClient.getProduct(ctx, REUSD, APS);
+    const apsTx = await apsPriceClient.postPrice(
+      apsPrice,
+      apsPriceClient.ctx.wallet.publicKey
+    );
+    await apsTx.buildAndExecute();
+    console.log("Post aps price done.")
+    await apsPriceClient.refresh();
+    console.log("apsPrice", await apsPriceClient.getPrice());
+  } catch (error) {
+    catchError(error, "APS");
+  }
 
   try {
     const bnbPrice = await calculateCommonCoinPrice("BNB");
