@@ -22,12 +22,9 @@ export const PRICE_WEIGHTS = {
     remitano: 15,
     binance: 50,
     okx: 25,
-    kucoin: 10,
+    kucoin: 1,
   },
-  gast: {
-    nemo: 100,
-  },
-  plus1: {
+  only_nemo: {
     nemo: 100,
   },
 };
@@ -77,4 +74,8 @@ export const REBNB = new PublicKey(
 
 export const RESOL = new PublicKey(
   "3r7AzTijvTDoLGgMqcNXTJimwg8XyxUG6EaVqHXF8EWC"
+);
+
+export const APS = new PublicKey(
+  "BQEZ2K6Gj662kdKtaH4RhpuZDrPpxKm5ANFc9e27k2YU"
 );
