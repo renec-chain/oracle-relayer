@@ -7,6 +7,7 @@ import {
   fetchRENECPriceFromNemo,
   fetchGASTPriceFromNemo,
   fetchPLUS1PriceFromNemo,
+  fetchAPSPriceFromNemo,
 } from "./nemo.js";
 import {
   fetchUSDPriceFromCoinbase,
@@ -41,7 +42,7 @@ export const calculateGASTPrice = async () => {
   console.log("GAST prices", prices);
   const avgPrice = calculateAveragePrice(
     prices,
-    PRICE_WEIGHTS.gast,
+    PRICE_WEIGHTS.only_nemo,
   );
 
   return avgPrice;
@@ -56,7 +57,22 @@ export const calculatePLUS1Price = async () => {
   console.log("PLUS1 prices", prices);
   const avgPrice = calculateAveragePrice(
     prices,
-    PRICE_WEIGHTS.plus1,
+    PRICE_WEIGHTS.only_nemo,
+  );
+
+  return avgPrice;
+};
+
+export const calculateAPSPrice = async () => {
+  const nemoPrice = await fetchAPSPriceFromNemo();
+
+  const prices = {
+    nemo: nemoPrice,
+  };
+  console.log("APS prices", prices);
+  const avgPrice = calculateAveragePrice(
+    prices,
+    PRICE_WEIGHTS.only_nemo,
   );
 
   return avgPrice;
