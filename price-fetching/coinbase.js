@@ -23,7 +23,7 @@ export const fetchETHPriceFromCoinbase = async () => {
   return await fetchPriceFromCoinbase('ETH');
 }
 
-const fetchPriceFromCoinbase = async (coin) => {
+export const fetchPriceFromCoinbase = async (coin) => {
   const endpoint = `https://api.coinbase.com/v2/prices/${coin}-USD/spot`;
   try {
     const response = await axios.get(endpoint);
