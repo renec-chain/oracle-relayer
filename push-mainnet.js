@@ -248,6 +248,7 @@ try {
   postReusdPrice();
   postBtcPrice();
   postEthPrice();
+  postRengnPrice();
   postRenecPrice();
 }
 catch(error) {
