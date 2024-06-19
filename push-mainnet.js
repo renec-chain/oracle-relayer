@@ -49,17 +49,16 @@ const catchError = (error, coin) => {
   const message = `Hey <@ngocbv>, we got exception on ${coin}: ${error.message}`
   postSlack(message);
 }
+const relayerKeypair = Keypair.fromSecretKey(Uint8Array.from(relayerJson));
 
-try {
-  const relayerKeypair = Keypair.fromSecretKey(Uint8Array.from(relayerJson));
+const commitment = "confirmed";
+const connection = new Connection(MAINNET_RPC_ENDPOINT_URL, { commitment });
+const wallet = new Wallet(relayerKeypair);
+const provider = new AnchorProvider(connection, wallet, { commitment });
 
-  const commitment = "confirmed";
-  const connection = new Connection(MAINNET_RPC_ENDPOINT_URL, { commitment });
-  const wallet = new Wallet(relayerKeypair);
-  const provider = new AnchorProvider(connection, wallet, { commitment });
+const ctx = Context.withProvider(provider, ORACLE_PROGRAM_ID);
 
-  const ctx = Context.withProvider(provider, ORACLE_PROGRAM_ID);
-
+const postApsPrice = async () => {
   try {
     const apsPrice = await calculateAPSPrice();
 
@@ -75,7 +74,8 @@ try {
   } catch (error) {
     catchError(error, "APS");
   }
-
+}
+const postBnbPrice = async () => {
   try {
     const bnbPrice = await calculateCommonCoinPrice("BNB");
 
@@ -91,7 +91,9 @@ try {
   } catch (error) {
     catchError(error, "reBNB");
   }
+}
 
+const postSolPrice = async () => {
   try {
     const solPrice = await calculateCommonCoinPrice("SOL");
 
@@ -107,7 +109,9 @@ try {
   } catch (error) {
     catchError(error, "reSOL");
   }
+}
 
+const postGastPrice = async () => {
   try {
     const gastPrice = await calculateGASTPrice();
 
@@ -123,7 +127,9 @@ try {
   } catch (error) {
     catchError(error, "GAST");
   }
+}
 
+const postPlus1Price = async () => {
   try {
     const plus1Price = await calculatePLUS1Price();
 
@@ -139,7 +145,9 @@ try {
   } catch (error) {
     catchError(error, "PLUS1");
   }
+}
 
+const postReusdPrice = async () => {
   try {
     const reusdPrice = await calculateUSDPrice();
 
@@ -150,13 +158,15 @@ try {
     );
 
     await reusdTx.buildAndExecute();
-    console.log("Post reusd price done.")
+    console.log("Post reusd (renec) price done.")
     await reusdPriceClient.refresh();
     console.log("reusdPrice", await reusdPriceClient.getPrice());
   } catch (error) {
     catchError(error, "reUSD");
   }
+}
 
+const postBtcPrice = async () => {
   try {
     const btcPrice = await calculateCommonCoinPrice("BTC");
 
@@ -173,7 +183,9 @@ try {
   } catch (error) {
     catchError(error, "reBTC");
   }
+}
 
+const postEthPrice = async () => {
   try {
     const ethPrice = await calculateCommonCoinPrice("ETH");
 
@@ -189,7 +201,9 @@ try {
   } catch (error) {
     catchError(error, "reETH");
   }
+}
 
+const postRengnPrice = async () => {
   try {
     const rengnPrice = await calculateNGNPrice();
 
@@ -205,7 +219,9 @@ try {
   } catch (error) {
     catchError(error, "reNGN");
   }
+}
 
+const postRenecPrice = async () => {
   try {
     const renecPrice = await calculateRENECPrice();
 
@@ -221,6 +237,18 @@ try {
   } catch (error) {
     catchError(error, "RENEC");
   }
+}
+
+try {
+  postApsPrice();
+  postSolPrice();
+  postBnbPrice();
+  postGastPrice();
+  postPlus1Price();
+  postReusdPrice();
+  postBtcPrice();
+  postEthPrice();
+  postRenecPrice();
 }
 catch(error) {
   catchError(error, "main");

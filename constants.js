@@ -5,6 +5,8 @@ export const TESTNET_RPC_ENDPOINT_URL =
 export const MAINNET_RPC_ENDPOINT_URL =
   "https://api-mainnet-beta.renec.foundation:8899";
 export const MAX_VOLUME_EACH_OFFER = 1000000;
+export const SOLANA_MAINNET_RPC_ENDPOINT_URL =
+  "https://still-boldest-pond.solana-mainnet.quiknode.pro/76b2c0a14b5e14e8cc430a88aaebec4e7d6e509b";
 
 export const PRICE_WEIGHTS = {
   default: {
