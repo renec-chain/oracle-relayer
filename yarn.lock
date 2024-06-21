@@ -1350,10 +1350,10 @@
     decimal.js "^10.3.1"
     tiny-invariant "^1.2.0"
 
-"@renec-foundation/oracle-sdk@0.1.10":
-  version "0.1.10"
-  resolved "https://registry.npmjs.org/@renec-foundation/oracle-sdk/-/oracle-sdk-0.1.10.tgz"
-  integrity sha512-a0IeX7GOHm6OdMwTxVqNHNX097Hx8yzPWimu1FzZoI+nViAT3jG4D50ZMAjGmMMKmftO3nmgBZE/xFrY6xx2Yg==
+"@renec-foundation/oracle-sdk@0.1.11":
+  version "0.1.11"
+  resolved "https://registry.npmjs.org/@renec-foundation/oracle-sdk/-/oracle-sdk-0.1.11.tgz"
+  integrity sha512-pIZ/90lKuFX35aXBTcgSCnyb3YY4bKkr8vSr348PPCDDHQUZKagOdZAQySLgbuquzMe8nZVgoAXKhx/KHaazLA==
   dependencies:
     "@orca-so/common-sdk" "0.1.11"
     "@project-serum/anchor" "0.20.1"
