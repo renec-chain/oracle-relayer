@@ -15,6 +15,7 @@ import {
   REBTC,
   REETH,
   RENEC,
+  STRENEC,
   RENGN,
 } from "@renec-foundation/oracle-sdk";
 import fs from "fs";
@@ -30,6 +31,7 @@ import {
 import {
   calculateUSDPrice,
   calculateRENECPrice,
+  calculateStrenecRatio,
   calculateNGNPrice,
   calculateGASTPrice,
   calculatePLUS1Price,
@@ -220,11 +222,8 @@ const postRengnPrice = async () => {
     catchError(error, "reNGN");
   }
 }
-
-const postRenecPrice = async () => {
+const postRenecPrice = async (renecPrice) => {
   try {
-    const renecPrice = await calculateRENECPrice();
-
     const renecPriceClient = await ProductClient.getProduct(ctx, REUSD, RENEC);
     const renecTx = await renecPriceClient.postPrice(
       renecPrice,
@@ -239,6 +238,37 @@ const postRenecPrice = async () => {
   }
 }
 
+const postStrenecPrice = async (renecPrice) => {
+  try {
+    const strenecRatio = await calculateStrenecRatio();
+    const strenecPrice = renecPrice / strenecRatio;
+    console.log("strenecPrice", strenecPrice);
+
+    const strenecPriceClient = await ProductClient.getProduct(ctx, REUSD, STRENEC);
+    const strenecTx = await strenecPriceClient.postPrice(
+      strenecPrice,
+      strenecPriceClient.ctx.wallet.publicKey
+    );
+    await strenecTx.buildAndExecute();
+    console.log("Post strenec price done.")
+    await strenecPriceClient.refresh();
+    console.log("strenecPrice", await strenecPriceClient.getPrice());
+  } catch (error) {
+    catchError(error, "stRENEC");
+  }
+}
+
+const postRenecStrenecPrice = async () => {
+  try {
+    const renecPrice = await calculateRENECPrice();
+
+    await postRenecPrice(renecPrice);
+    await postStrenecPrice(renecPrice);
+  } catch (error) {
+    catchError(error, "RENEC-stRENEC");
+  }
+}
+
 try {
   postApsPrice();
   postSolPrice();
@@ -249,7 +279,7 @@ try {
   postBtcPrice();
   postEthPrice();
   postRengnPrice();
-  postRenecPrice();
+  postRenecStrenecPrice();
 }
 catch(error) {
   catchError(error, "main");
