@@ -81,3 +81,11 @@ export const RESOL = new PublicKey(
 export const APS = new PublicKey(
   "BQEZ2K6Gj662kdKtaH4RhpuZDrPpxKm5ANFc9e27k2YU"
 );
+
+export const STRENEC_STATE_ID = new PublicKey(
+  '6dgKgb8GyUGAoyzUP1qdnLhQRYJqBFfR6TwVFsgNEC3H'
+)
+
+export const STRENEC_PROGRAM_ID = new PublicKey(
+  'Xv4P2xKrRaQfPFU1heTXsbmmiafrExaSZou339ujcUW'
+)

@@ -31,7 +31,15 @@ import {
   fetchUSDPriceFromKucoinP2p,
   fetchPriceFromKucoin,
 } from "./kucoin.js";
-import { PRICE_WEIGHTS, VALID_PRICE_RANGES } from "../constants.js";
+import {
+  PRICE_WEIGHTS,
+  VALID_PRICE_RANGES,
+  MAINNET_RPC_ENDPOINT_URL,
+  STRENEC_STATE_ID,
+  STRENEC_PROGRAM_ID,
+} from "../constants.js";
+import { Marinade, MarinadeUtils, MarinadeConfig } from "@renec-foundation/liquid-staking-sdk";
+import { PublicKey, Connection } from "@solana/web3.js";
 
 export const calculateGASTPrice = async () => {
   const nemoPrice = await fetchGASTPriceFromNemo();
@@ -186,6 +194,25 @@ export const calculateRENECPrice = async () => {
   );
 
   return avgPrice;
+};
+
+export const calculateStrenecRatio = async () => {
+  const marinadeConfig = new MarinadeConfig({
+    connection: new Connection(MAINNET_RPC_ENDPOINT_URL, {
+      commitment: 'confirmed',
+    }),
+    marinadeFinanceProgramId: STRENEC_PROGRAM_ID,
+    marinadeStateAddress: STRENEC_STATE_ID,
+  })
+  const marinade = new Marinade(marinadeConfig)
+  const marinadeState = await marinade.getMarinadeState()
+  const stakeAmount = MarinadeUtils.solToLamports(1)
+  const price = MarinadeUtils.computeMsolAmount(
+    stakeAmount,
+    marinadeState
+  )
+  console.log("stRENEC ratio", price.toString() / 1e9);
+  return price.toString() / 1e9;
 };
 
 export const calculateNGNPrice = async () => {

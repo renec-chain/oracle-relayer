@@ -1,4 +1,5 @@
 node_modules
 relayer.json
 relayer.log
+solana-relayer.log
 .env
