@@ -29,6 +29,9 @@ export const PRICE_WEIGHTS = {
   only_nemo: {
     nemo: 100,
   },
+  only_raydium: {
+    raydium: 100,
+  }
 };
 
 export const VALID_PRICE_RANGES = {

@@ -1,11 +1,7 @@
-import dotenv from 'dotenv'
-dotenv.config({ path: process.cwd() + '/oracle-relayer/.env' })
 import { Connection, PublicKey } from '@solana/web3.js';
 import { LIQUIDITY_STATE_LAYOUT_V4, PoolInfoLayout, WSOL } from "@raydium-io/raydium-sdk";
+import { SOLANA_MAINNET_RPC_ENDPOINT_URL } from '../constants.js';
 
-
-export const RPC_ENDPOINT_URL = process.env.SOLANA_RPC_URL ||
-    "https://api.mainnet-beta.solana.com";
 
 const USDT_SOL_POOL_ID = "3nMFwZXwY1s1M5s8vYAHqd4wGs4iSxXE4LRoUMMYqEgF"
 
@@ -21,7 +17,7 @@ export const getTokenBalance = async (connection, vault, decimals) => {
  * @returns 
  */
 export const fetchPriceFromRaydiumClmmPool = async (poolAddress) => {
-    const connection = new Connection(RPC_ENDPOINT_URL, "confirmed");
+    const connection = new Connection(SOLANA_MAINNET_RPC_ENDPOINT_URL, "confirmed");
 
     const info = await connection.getAccountInfo(new PublicKey(poolAddress));
     if (!info) {
@@ -48,7 +44,7 @@ export const fetchPriceFromRaydiumClmmPool = async (poolAddress) => {
  * @returns 
  */
 export const fetchPriceFromRaydiumAmmPool = async (poolAddress) => {
-    const connection = new Connection(RPC_ENDPOINT_URL, "confirmed");
+    const connection = new Connection(SOLANA_MAINNET_RPC_ENDPOINT_URL, "confirmed");
 
     const info = await connection.getAccountInfo(new PublicKey(poolAddress));
     if (!info) {

@@ -40,6 +40,7 @@ import {
 } from "../constants.js";
 import { Marinade, MarinadeUtils, MarinadeConfig } from "@renec-foundation/liquid-staking-sdk";
 import { PublicKey, Connection } from "@solana/web3.js";
+import { fetchRELPriceFromRaydium } from "./raydium.js";
 
 export const calculateGASTPrice = async () => {
   const nemoPrice = await fetchGASTPriceFromNemo();
@@ -85,6 +86,19 @@ export const calculateAPSPrice = async () => {
 
   return avgPrice;
 };
+
+export const calculateRELPrice = async () => {
+  const raydiumPrice = await fetchRELPriceFromRaydium();
+  const prices = {
+    raydium: raydiumPrice,
+  }
+  console.log("REL prices", prices);
+  const avgPrice = calculateAveragePrice(
+    prices,
+    PRICE_WEIGHTS.only_raydium,
+  )
+  return avgPrice;
+}
 
 export const calculateUSDPrice = async () => {
   const remiPrice = await fetchUSDPriceFromRemitano();
