@@ -92,3 +92,7 @@ export const STRENEC_STATE_ID = new PublicKey(
 export const STRENEC_PROGRAM_ID = new PublicKey(
   'Xv4P2xKrRaQfPFU1heTXsbmmiafrExaSZou339ujcUW'
 )
+
+export const REL_SOLANA = new PublicKey(
+  "9HvM3nS2eDKWxNvi8vSFXRhHA1xhDW33rt4ZA1bE1DbV",
+)
