@@ -1,6 +1,7 @@
 import { Connection, PublicKey } from '@solana/web3.js';
 import { LIQUIDITY_STATE_LAYOUT_V4, PoolInfoLayout, WSOL } from "@raydium-io/raydium-sdk";
 import { SOLANA_MAINNET_RPC_ENDPOINT_URL } from '../constants.js';
+import { calculateCommonCoinPrice } from './index.js';
 
 
 const USDT_SOL_POOL_ID = "3nMFwZXwY1s1M5s8vYAHqd4wGs4iSxXE4LRoUMMYqEgF"
@@ -10,32 +11,33 @@ export const getTokenBalance = async (connection, vault, decimals) => {
     return parseFloat(balance.value.amount) / Math.pow(10, decimals); // Adjust the balance for the token's decimals
 };
 
-/**
- * @description Fetch the price of a token in SOL using Raydium onchain data from a CLMM pool
- *
- * @param {*} poolAddress The pool address of the token and SOL
- * @returns 
- */
-export const fetchPriceFromRaydiumClmmPool = async (poolAddress) => {
-    const connection = new Connection(SOLANA_MAINNET_RPC_ENDPOINT_URL, "confirmed");
+// /**
+//  * @description Fetch the price of a token in SOL using Raydium onchain data from a CLMM pool
+//  *
+//  * @param {*} poolAddress The pool address of the token and SOL
+//  * @returns 
+//  */
+// export const fetchPriceFromRaydiumClmmPool = async (poolAddress) => {
+//     const connection = new Connection(SOLANA_MAINNET_RPC_ENDPOINT_URL, "confirmed");
 
-    const info = await connection.getAccountInfo(new PublicKey(poolAddress));
-    if (!info) {
-        throw new Error(`Pool ${poolAddress} not exists`);
-    }
+//     const info = await connection.getAccountInfo(new PublicKey(poolAddress));
+//     if (!info) {
+//         throw new Error(`Pool ${poolAddress} not exists`);
+//     }
 
-    const poolState = PoolInfoLayout.decode(info.data);
+//     const poolState = PoolInfoLayout.decode(info.data);
+//     console.log("poolState1", poolState.mintA.toBase58(), poolState.mintB.toBase58());
 
-    const tokenABalance = await getTokenBalance(connection, poolState.vaultA, poolState.mintDecimalsA);
-    const tokenBBalance = await getTokenBalance(connection, poolState.vaultB, poolState.mintDecimalsB);
+//     const tokenABalance = await getTokenBalance(connection, poolState.vaultA, poolState.mintDecimalsA);
+//     const tokenBBalance = await getTokenBalance(connection, poolState.vaultB, poolState.mintDecimalsB);
 
-    if (poolState.mintA.toBase58() === WSOL.mint)
-        return tokenABalance / tokenBBalance;
-    else if (poolState.mintB.toBase58() === WSOL.mint)
-        return tokenBBalance / tokenABalance;
-    else
-        throw new Error(`Invalid pool ${poolAddress}`);
-}
+//     if (poolState.mintA.toBase58() === WSOL.mint)
+//         return tokenABalance / tokenBBalance;
+//     else if (poolState.mintB.toBase58() === WSOL.mint)
+//         return tokenBBalance / tokenABalance;
+//     else
+//         throw new Error(`Invalid pool ${poolAddress}`);
+// }
 
 /**
  * @description Fetch the price of a token in SOL using Raydium onchain data from a AMM pool
@@ -80,6 +82,6 @@ export const fetchRELPriceFromRaydium = async () => {
  */
 export const fetchPriceFromRaydium = async (poolAddress) => {
     const tokenSolPrice = await fetchPriceFromRaydiumAmmPool(poolAddress);
-    const usdtSolPrice = await fetchPriceFromRaydiumClmmPool(USDT_SOL_POOL_ID);
-    return tokenSolPrice / usdtSolPrice;
+    const solUsdtPrice = await calculateCommonCoinPrice("SOL");
+    return tokenSolPrice * solUsdtPrice;
 }
