@@ -29,6 +29,9 @@ export const PRICE_WEIGHTS = {
   only_nemo: {
     nemo: 100,
   },
+  only_raydium: {
+    raydium: 100,
+  }
 };
 
 export const VALID_PRICE_RANGES = {
@@ -88,4 +91,8 @@ export const STRENEC_STATE_ID = new PublicKey(
 
 export const STRENEC_PROGRAM_ID = new PublicKey(
   'Xv4P2xKrRaQfPFU1heTXsbmmiafrExaSZou339ujcUW'
+)
+
+export const REL_SOLANA = new PublicKey(
+  "9HvM3nS2eDKWxNvi8vSFXRhHA1xhDW33rt4ZA1bE1DbV",
 )

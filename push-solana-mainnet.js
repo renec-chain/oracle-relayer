@@ -17,6 +17,7 @@ import fs from "fs";
 import relayerJson from "./relayer.json" assert { type: "json" };
 import {
   MAINNET_RPC_ENDPOINT_URL,
+  REL_SOLANA,
   SOLANA_MAINNET_RPC_ENDPOINT_URL,
 } from "./constants.js";
 import {
@@ -63,9 +64,28 @@ const postReusdPrice = async () => {
   }
 }
 
+const postRelPrice = async () => {
+  try {
+    const relPrice = await calculateRELPrice();
+    const relPriceClient = await ProductClient.getProduct(solanaCtx, USDT_SOLANA, REL_SOLANA);
+    const relTx = await relPriceClient.postPrice(
+      relPrice,
+      relPriceClient.ctx.wallet.publicKey
+    );
+
+    await relTx.buildAndExecute();
+    console.log("Post rel (solana) price done.")
+    await relPriceClient.refresh();
+    console.log("relPrice", await relPriceClient.getPrice());
+  } catch (error) {
+    catchError(error, "REL");
+  }
+}
+
 try {
   postReusdPrice();
+  postRelPrice();
 }
-catch(error) {
+catch (error) {
   catchError(error, "main");
 }
