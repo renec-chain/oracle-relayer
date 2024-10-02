@@ -13,6 +13,7 @@ import {
   REVND_SOLANA,
   USDT_SOLANA,
 } from "@renec-foundation/oracle-sdk";
+const RENEC_SOLANA = new PublicKey("Ed6wQTbHwnoaSGx1y9YeqNkXJqNYYLCcAQoBhA3nuYYH");
 import fs from "fs";
 import relayerJson from "./relayer.json" assert { type: "json" };
 import {
@@ -22,6 +23,7 @@ import {
 } from "./constants.js";
 import {
   calculateUSDPrice,
+  calculateRENECPrice,
 } from "./price-fetching/index.js";
 
 const postSlack = (message) => {
@@ -44,7 +46,6 @@ const solanaConnection = new Connection(SOLANA_MAINNET_RPC_ENDPOINT_URL, { commi
 const solanaProvider = new AnchorProvider(solanaConnection, wallet, { commitment });
 const solanaCtx = Context.withProvider(solanaProvider, ORACLE_PROGRAM_ID_SOLANA);
 
-
 const postReusdPrice = async () => {
   try {
     const reusdPrice = await calculateUSDPrice();
@@ -61,6 +62,32 @@ const postReusdPrice = async () => {
     console.log("reusdPrice", await reusdPriceClient.getPrice());
   } catch (error) {
     catchError(error, "reUSD");
+  }
+}
+
+const postRenecPrice = async (renecPrice) => {
+  try {
+    const renecPriceClient = await ProductClient.getProduct(solanaCtx, USDT_SOLANA, RENEC_SOLANA);
+    const renecTx = await renecPriceClient.postPrice(
+      renecPrice,
+      renecPriceClient.ctx.wallet.publicKey
+    );
+    await renecTx.buildAndExecute();
+    console.log("Post renec price done.")
+    await renecPriceClient.refresh();
+    console.log("renecPrice", await renecPriceClient.getPrice());
+  } catch (error) {
+    catchError(error, "RENEC");
+  }
+}
+
+const postRenecStrenecPrice = async () => {
+  try {
+    const renecPrice = await calculateRENECPrice();
+
+    await postRenecPrice(renecPrice);
+  } catch (error) {
+    catchError(error, "RENEC-stRENEC");
   }
 }
 
@@ -84,6 +111,7 @@ const postRelPrice = async () => {
 
 try {
   postReusdPrice();
+  postRenecStrenecPrice();
   postRelPrice();
 }
 catch (error) {
