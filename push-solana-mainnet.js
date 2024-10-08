@@ -24,6 +24,7 @@ import {
 import {
   calculateUSDPrice,
   calculateRENECPrice,
+  calculateRELPrice,
 } from "./price-fetching/index.js";
 
 const postSlack = (message) => {
